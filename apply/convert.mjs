@@ -116,8 +116,13 @@ body = body.replace(/<table([^>]*)>([\s\S]*?)<\/table>/g, (m, attrs, inner) => {
   const head = inner.match(/^([\s\S]*?<\/thead>)([\s\S]*)$/);
   return head ? `<table${attrs}>${head[1]}<tbody>${head[2]}</tbody></table>` : `<table${attrs}><tbody>${inner}</tbody></table>`;
 });
+let thScoped = 0;
+body = body.replace(/<thead>([\s\S]*?)<\/thead>/g, (m, inner) => `<thead>${inner.replace(/<th(?![^>]*\bscope=)([^>]*)>/g, (t, attrs) => { thScoped += 1; return `<th scope="col"${attrs}>`; })}</thead>`);
+body = body.replace(/<th(?![^>]*\bscope=)([^>]*)>/g, (t, attrs) => { thScoped += 1; return `<th scope="row"${attrs}>`; });
+let ampFixed = 0;
+body = body.replace(/&(?![a-zA-Z]+;|#\d+;|#x[0-9a-fA-F]+;)/g, () => { ampFixed += 1; return '&amp;'; });
 body = body.replace(/<nav class="top">/, '<nav class="top" aria-label="Sections">');
-audit.push(`Buttons given an explicit type: ${buttonsTyped}; tables given a <tbody>: ${tablesFixed}; top navigation given an accessible name.`);
+audit.push(`Buttons given an explicit type: ${buttonsTyped}; tables given a <tbody>: ${tablesFixed}; <th> given a scope: ${thScoped}; raw ampersands encoded: ${ampFixed}; top navigation given an accessible name.`);
 body = body.replace(/\n{3,}/g, '\n\n');
 
 const sectionIds = [...body.matchAll(/<section[^>]*\sid="([^"]+)"/g)].map((m) => m[1]);
