@@ -40,7 +40,7 @@ jobs:
         id: lc
         run: |
           URL="https://freddricklogan.github.io/${GITHUB_REPOSITORY#*/}/"
-          if curl -sfI "$URL" >/dev/null; then echo "exclude=" >> "$GITHUB_OUTPUT"; else echo "exclude=--exclude $URL" >> "$GITHUB_OUTPUT"; fi
+          if [ "$(curl -s -o /dev/null -w "%{http_code}" "$URL")" = "200" ]; then echo "exclude=" >> "$GITHUB_OUTPUT"; else echo "exclude=--exclude $URL" >> "$GITHUB_OUTPUT"; fi
       # LinkedIn answers automated requests with HTTP 999; the profile link is checked by hand.
       - name: Link check (lychee)
         uses: lycheeverse/lychee-action@v2
