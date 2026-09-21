@@ -8,6 +8,8 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * 1' # weekly advisory link check
 
 # Least privilege at the top; jobs widen only what they need.
 permissions:
@@ -34,18 +36,27 @@ jobs:
         run: npm run lint
       - name: html-validate
         run: npm run validate
-      # The repository's own Pages URL returns 404 between enabling the workflow-based site and
-      # its first deploy, and deploy depends on this job. Exclude it only while it returns no 200.
-      - name: Resolve link-check exclusions
-        id: lc
-        run: |
-          URL="https://freddricklogan.github.io/${GITHUB_REPOSITORY#*/}/"
-          if [ "$(curl -s -o /dev/null -w "%{http_code}" "$URL")" = "200" ]; then echo "exclude=" >> "$GITHUB_OUTPUT"; else echo "exclude=--exclude $URL" >> "$GITHUB_OUTPUT"; fi
-      # LinkedIn answers automated requests with HTTP 999; the profile link is checked by hand.
+
+  # Advisory only: a new repository's own Pages URL and badge SVGs cannot exist before its first
+  # green run, and external links rot. This job never blocks lint, tests, build or deploy.
+  link-check:
+    name: Link check (advisory)
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
       - name: Link check (lychee)
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --no-progress --max-concurrency 4 --accept 200,206,429,999 ${{ steps.lc.outputs.exclude }} index.html README.md docs/CASE_STUDY.md
+          # 999 = LinkedIn's answer to automated requests; own actions + Pages URLs are self-referential.
+          args: >-
+            --no-progress --max-concurrency 4 --accept 200,206,429,999
+            --exclude 'github.com/${{ github.repository }}/actions'
+            --exclude 'freddricklogan.github.io/${{ github.event.repository.name }}'
+            README.md docs/CASE_STUDY.md index.html
           fail: true
 
   test:
