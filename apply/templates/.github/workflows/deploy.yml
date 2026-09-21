@@ -34,11 +34,18 @@ jobs:
         run: npm run lint
       - name: html-validate
         run: npm run validate
+      # The repository's own Pages URL returns 404 between enabling the workflow-based site and
+      # its first deploy, and deploy depends on this job. Exclude it only while it returns no 200.
+      - name: Resolve link-check exclusions
+        id: lc
+        run: |
+          URL="https://freddricklogan.github.io/${GITHUB_REPOSITORY#*/}/"
+          if curl -sfI "$URL" >/dev/null; then echo "exclude=" >> "$GITHUB_OUTPUT"; else echo "exclude=--exclude $URL" >> "$GITHUB_OUTPUT"; fi
       # LinkedIn answers automated requests with HTTP 999; the profile link is checked by hand.
       - name: Link check (lychee)
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --no-progress --max-concurrency 4 --accept 200,206,429,999 index.html README.md docs/CASE_STUDY.md
+          args: --no-progress --max-concurrency 4 --accept 200,206,429,999 ${{ steps.lc.outputs.exclude }} index.html README.md docs/CASE_STUDY.md
           fail: true
 
   test:
