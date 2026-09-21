@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Learning Resource Kit — the shared layer under ten resources</title>
+<meta name="description" content="Executive Shell, collapsible sections with saved progress, a quiz engine emitting xAPI 1.0.3 statements, and a print stylesheet, shared by ten graduate-level learning resources by Freddrick Logan.">
+<meta name="author" content="Freddrick Logan">
+<link rel="canonical" href="https://freddricklogan.github.io/learning-resource-kit/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2314213d'/%3E%3Cpath d='M8 9h16M8 16h16M8 23h10' stroke='%2394773d' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap">
+</head>
+<body>
+<main>
+<header class="hero"><div class="wrap">
+  <span class="eyebrow">Learning Resource Kit</span>
+  <h1>One layer, ten resources</h1>
+  <p>Each of the ten learning resources on this profile is a single authored page. The kit adds what a page cannot author by hand: a consistent header, saved progress, a quiz that records standard learning statements, and a print layout. This demo is the kit applied to itself.</p>
+</div></header>
+
+<section aria-label="Executive summary"><div class="wrap">
+  <div class="exec-summary">
+    <div class="tldr">Summary</div>
+    <h2>What the kit does, in one paragraph</h2>
+    <p>A resource keeps its own HTML and stylesheet. It vendors <code>lr-kit.js</code>, <code>lr-kit.css</code> and the Executive Shell, and adds a <code>config.js</code> with a title, tagline and five quiz questions. The kit indexes the page’s sections, mounts the shell with live KPIs (sections, reading time, sections opened, quiz score, statements), makes sections collapsible with keyboard support, and appends a quiz whose answers are recorded as xAPI 1.0.3 statements in the reader’s browser. Nothing leaves the page.</p>
+  </div>
+</div></section>
+
+<section id="progress"><div class="wrap">
+  <div class="sec-head"><span class="eyebrow">Progress</span><h2>Sections opened, saved locally</h2></div>
+  <p>When a collapsed section is opened for the first time, the kit records its id under <code>lr:&lt;resource&gt;:progress</code> in localStorage and emits an <em>experienced</em> statement. The KPI strip updates immediately and the count survives a reload. Storage that throws — private windows, blocked site data — degrades to memory for the session rather than breaking the page.</p>
+  <p>Opening is the signal, not scrolling: a heading passing through the viewport says nothing about reading, and the kit does not pretend otherwise.</p>
+</div></section>
+
+<section id="quiz-engine"><div class="wrap">
+  <div class="sec-head"><span class="eyebrow">Quiz engine</span><h2>One attempt, an explanation, a statement</h2></div>
+  <p>Questions are plain data: id, prompt, options, answer index and an explanation. <code>validateQuiz()</code> rejects duplicate ids, fewer than three distinct options and out-of-range answers, and every resource’s CI runs it against that resource’s config. The engine records the first choice per question, reveals the explanation, and disables the inputs. Radio buttons inside a fieldset with a legend keep it usable from the keyboard and a screen reader.</p>
+  <ul>
+    <li><em>answered</em> — one statement per question, with <code>result.success</code> and the chosen text as <code>result.response</code>.</li>
+    <li><em>completed</em> — once, when the last question is answered, with a scaled score and a 60% success threshold.</li>
+  </ul>
+</div></section>
+
+<section id="xapi"><div class="wrap">
+  <div class="sec-head"><span class="eyebrow">xAPI</span><h2>Standard statements without a server</h2></div>
+  <p>Statements follow the xAPI 1.0.3 shape: an Agent actor with an account (a random <code>anon-</code> name per browser and the resource URL as home page), an ADL verb IRI, an Activity object with a name and type, an optional result, an ISO timestamp and the version string. They are kept in a capped local store and shown as JSON at the end of the quiz so a reader — or a hiring manager — can inspect exactly what would be sent to a learning record store if one were configured.</p>
+  <p>None is sent. The content-security policy on every resource sets <code>connect-src 'none'</code>, and the kit contains no network code.</p>
+</div></section>
+
+<section id="print"><div class="wrap">
+  <div class="sec-head"><span class="eyebrow">Print</span><h2>A print layout that opens everything</h2></div>
+  <p>The print stylesheet hides the shell, navigation and buttons, expands every collapsed section, appends external link targets after their text, and avoids page breaks inside a section. A resource printed to PDF reads as the complete document rather than a list of closed headings.</p>
+</div></section>
+</main>
+<footer><div class="wrap">Learning Resource Kit — Freddrick Logan. Source, tests and the converter that applies it to a resource are in the repository linked above.</div></footer>
+<script type="module" src="/src/main.ts"></script>
+</body>
+</html>
