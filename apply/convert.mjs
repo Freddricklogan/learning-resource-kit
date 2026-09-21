@@ -102,7 +102,9 @@ if (!/<main[\s>]/.test(body)) {
   audit.push('<main> landmark present in the original.');
 }
 body = body.replace(/<\/body>/, `<script type="module" src="src/main.js"></script>\n</body>`);
-body = body.replace(/href="\.\.\/resources\/"/g, 'href="https://freddricklogan.github.io/resources/"');
+// Sibling links (../resources/, ../online-course-design/) assumed the user-site folder layout; the
+// project Pages site has no parent, so make them absolute.
+body = body.replace(/href="\.\.\/([a-z0-9-]+)\/"/g, 'href="https://freddricklogan.github.io/$1/"');
 // Accessibility and validity fixes that html-validate:recommended requires.
 let buttonsTyped = 0;
 body = body.replace(/<button(?![^>]*\btype=)([^>]*)>/g, (m, attrs) => {
