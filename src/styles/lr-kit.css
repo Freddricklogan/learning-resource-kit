@@ -1,0 +1,50 @@
+/* Learning Resource Kit — layered over the Executive Shell and each resource's own stylesheet.
+   Load order: exec-shell.css → lr-kit.css → page.css. The shell keeps its dark tokens; the
+   resource keeps its light editorial design under the --lr-* prefix. */
+html { color-scheme: light; }
+/* The resource's own top nav was sticky; the shell header is the sticky element now. */
+nav.top { position: static; }
+/* Shell chrome keeps its own type and colour even though the resource styles h1/h2/p globally.
+   These selectors outrank the resources' element selectors without touching the shell file. */
+:is(.exec-header, .exec-kpis, .exec-footer, .exec-tour-card) :is(h1, h2, h3, h4, p, li, span, div, button) { font-family: var(--shell-font); }
+.exec-header__title, .exec-tour-card__title, .exec-kpi__value, .exec-footer { color: var(--text); font-family: var(--shell-font); }
+.exec-header__title { font-size: 1.2rem; margin: 0; letter-spacing: 0.2px; }
+.exec-header__tagline, .exec-tour-card__body, .exec-kpi__label { color: var(--muted); font-family: var(--shell-font); }
+.exec-header__tagline { margin: 4px 0 0; }
+.exec-tour-card__title { font-size: 1.02rem; margin: 6px 0; }
+.exec-tour-card__step { color: var(--accent); }
+:is(.exec-header, .exec-footer, .exec-tour-card) a { color: var(--accent); }
+
+.lr-quiz { padding: 56px 0 40px; }
+.lr-quiz__form { display: grid; gap: 22px; max-width: 760px; }
+.lr-q { border: 1px solid var(--lr-line2, #d1d8e2); border-radius: 12px; padding: 18px 20px 12px; margin: 0; background: #fff; }
+.lr-q.is-correct { border-color: var(--lr-good, #15803d); }
+.lr-q.is-wrong { border-color: var(--lr-bad, #b3261e); }
+.lr-q__prompt { font-weight: 600; color: var(--lr-ink, #14213d); padding: 0 6px; margin-bottom: 6px; }
+.lr-q__row { display: flex; align-items: flex-start; gap: 10px; padding: 6px 0; }
+.lr-q__input { margin-top: 5px; flex: 0 0 auto; accent-color: var(--lr-accent, #1e3a5f); }
+.lr-q__opt { cursor: pointer; color: var(--lr-body, #33404f); }
+.lr-q__input:disabled + .lr-q__opt { cursor: default; }
+.lr-q__opt.is-answer { font-weight: 600; color: var(--lr-good, #15803d); }
+.lr-q__feedback { margin-top: 10px; font-size: 0.92rem; color: var(--lr-muted, #4c596b); border-top: 1px solid var(--lr-line, #e3e7ec); padding-top: 10px; }
+.lr-quiz__score { margin-top: 18px; font-weight: 600; color: var(--lr-ink, #14213d); }
+.lr-log { margin-top: 18px; font-size: 0.88rem; color: var(--lr-muted, #4c596b); max-width: 760px; }
+.lr-log summary { cursor: pointer; color: var(--lr-accent, #1e3a5f); font-weight: 600; }
+.lr-log__actions { margin: 10px 0; }
+.lr-log__pre { background: var(--lr-paper2, #f5f7f9); border: 1px solid var(--lr-line, #e3e7ec); border-radius: 8px; padding: 12px; overflow-x: auto; font-size: 0.75rem; line-height: 1.45; max-height: 320px; color: var(--lr-body, #33404f); }
+.lr-btn { font-size: 0.82rem; padding: 8px 14px; }
+
+@media print {
+  .exec-skip-link, .exec-header, .exec-kpi-strip, .exec-footer, .exec-tour, nav.top, .expand-bar, .hero .cta, .lr-log__actions, button { display: none !important; }
+  section.collapsed .sect-body { display: block !important; }
+  .sec-head.sect-toggle::after { display: none; }
+  body { background: #fff; color: #000; }
+  a[href^='http']::after { content: ' (' attr(href) ')'; font-size: 0.8em; }
+  section { break-inside: avoid-page; }
+}
+
+/* Phone width: grid items may not force the track wider than the viewport; wide tables scroll
+   inside their card instead of the whole page scrolling sideways. */
+.grid > * { min-width: 0; }
+.card { overflow-x: auto; }
+.wrap { min-width: 0; }
