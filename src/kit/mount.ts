@@ -1,7 +1,7 @@
 /** DOM layer: mounts the Executive Shell over a learning resource, tracks section progress,
  * renders the kit quiz with xAPI statements, and exposes the statement log. */
 
-import { mountExecShell, type ShellApi, type TourStep } from '../shell/exec-shell.js';
+import { mountExecShell, type ShellApi, type ThemeName, type TourStep } from '../shell/exec-shell.js';
 import { createProgress, type Progress } from './progress.ts';
 import { answerItem, createQuiz, isCorrect, type QuizItem, type QuizState, scoreQuiz } from './quiz.ts';
 import { readingMinutes, sectionIndex, type SectionInfo } from './reading.ts';
@@ -13,6 +13,9 @@ export interface ResourceConfig {
   tagline: string;
   repo: string;
   pagesUrl: string;
+  /** Executive Shell palette (portfolio category); learning resources use 'plum'. */
+  theme?: ThemeName;
+  accent?: 'primary' | 'secondary';
   quiz: readonly QuizItem[];
   quizTitle?: string;
   quizIntro?: string;
@@ -199,6 +202,8 @@ export function mountLearningResource(config: ResourceConfig): ResourceApi {
     tagline: config.tagline,
     repo: config.repo,
     pagesUrl: config.pagesUrl,
+    ...(config.theme ? { theme: config.theme } : {}),
+    ...(config.accent ? { accent: config.accent } : {}),
     mainSelector: document.querySelector('main') ? 'main' : '#lr-quiz',
     badges: [{ label: 'Learning resource', tone: 'accent' }, { label: 'xAPI statements', dot: true }, { label: 'Progress stays in your browser', dot: true }],
     kpis: [
