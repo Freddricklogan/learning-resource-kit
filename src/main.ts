@@ -15,6 +15,7 @@ const quiz: QuizItem[] = [
 
 initCollapsible();
 mountLearningResource({
+  theme: 'plum',
   title: 'Learning Resource Kit',
   tagline: 'The shared layer under ten graduate-level learning resources: Executive Shell, collapsible sections with saved progress, a quiz engine that emits xAPI 1.0.3 statements, and a print stylesheet. This page is the kit applied to itself.',
   repo: 'https://github.com/Freddricklogan/learning-resource-kit',
