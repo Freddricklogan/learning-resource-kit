@@ -152,14 +152,14 @@ node apply/convert.mjs ../qualitative-research-methods qualitative-research-meth
 npm run lint       # eslint (typed): 0 problems
 npm run typecheck  # tsc --noEmit: clean
 npm run validate   # html-validate index.html: clean
-npm run coverage   # 31 passed; All files 99.03% stmts / 94.49% branches
+npm run coverage   # 40 passed; All files 99.06% stmts / 93.77% branches
 npm run build      # site → dist/, library → lib/lr-kit.js (30.2 kB)
 ```
 
 | Check | Result |
 | --- | --- |
-| Unit tests (Vitest, jsdom) | **31 passed / 31** across 7 files |
-| Coverage (`src/kit`) | **99.03%** statements, **94.49%** branches |
+| Unit tests (Vitest, jsdom) | **40 passed / 40** across 8 files |
+| Coverage (`src/kit`) | **99.06%** statements, **93.77%** branches |
 | ESLint (typed), `tsc --noEmit`, html-validate | clean |
 | Converter on `qualitative-research-methods` | 26 properties namespaced, 124 inline styles → 35 classes, 27 buttons typed, 6 tables fixed, `<main>` added; html-validate clean; 7 resource tests pass |
 | Headless Chrome smoke (built demo) | **0 console errors**; KPIs update on open and answer; xAPI verbs experienced → answered → completed; four tour steps; no horizontal scroll at 1200 or 400 px |

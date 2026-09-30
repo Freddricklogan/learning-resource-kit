@@ -48,3 +48,10 @@ nav.top { position: static; }
 .grid > * { min-width: 0; }
 .card { overflow-x: auto; }
 .wrap { min-width: 0; }
+
+/* Tour card never runs past the viewport: it scrolls inside, and Back / Next stay reachable. */
+.exec-tour-card{max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px);overflow-y:auto;overscroll-behavior:contain}
+.exec-tour-card__nav{position:sticky;bottom:-18px;background:inherit;padding-bottom:2px}
+/* On a learning resource the page's own nav is the sticky bar; the shell header scrolls away
+   so it never covers that nav (it was 189px tall at 1280px and 454px at 400px). */
+.exec-header{position:relative}

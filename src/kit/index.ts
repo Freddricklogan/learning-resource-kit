@@ -5,3 +5,4 @@ export { DEFAULT_WPM, readingMinutes, sectionIndex, type SectionInfo, wordCount 
 export { type KeyValueStore, memoryStore, readJson, safeLocalStore } from './storage.ts';
 export { ACTIVITY_TYPES, anonymousActor, buildStatement, createStatementStore, isStatement, type Statement, type StatementStore, uuid, VERBS } from './xapi.ts';
 export { type CollapsibleApi, initCollapsible } from './collapsible.ts';
+export { centreTourCard, placeTourCard, type TourPlacement, type TourRect } from './tour-place.ts';

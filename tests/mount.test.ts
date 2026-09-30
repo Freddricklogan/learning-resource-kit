@@ -37,6 +37,14 @@ const kpi = (label: string): string => {
 const flush = (): Promise<void> => new Promise((r) => setTimeout(r, 0));
 
 describe('mountLearningResource', () => {
+  it('never submits the quiz form (the page CSP is form-action none)', () => {
+    const form = document.querySelector<HTMLFormElement>('.lr-quiz__form');
+    expect(form).not.toBeNull();
+    const ev = new Event('submit', { cancelable: true, bubbles: true });
+    form!.dispatchEvent(ev);
+    expect(ev.defaultPrevented).toBe(true);
+  });
+
   it('indexes sections, mounts the shell, and inserts the quiz before the footer', () => {
     expect(api.sections.map((s) => s.id)).toEqual(['s1', 's2']);
     expect(document.querySelector('.exec-header h1')?.textContent).toBe('Demo');

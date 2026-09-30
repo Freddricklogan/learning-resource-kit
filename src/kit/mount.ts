@@ -77,6 +77,8 @@ export function mountLearningResource(config: ResourceConfig): ResourceApi {
     h('p', { class: 'lead' }, [config.quizIntro ?? 'One attempt per question. Your answers stay in this browser; nothing is sent anywhere.'])
   ]);
   const form = h('form', { class: 'lr-quiz__form', novalidate: '' });
+  // Answers are recorded on change; the form never submits (the page CSP is form-action 'none').
+  form.addEventListener('submit', (event) => event.preventDefault());
   const scoreEl = h('p', { class: 'lr-quiz__score', 'aria-live': 'polite' });
   const logDetails = h('details', { class: 'lr-log' });
   const logSummary = h('summary', {}, ['xAPI statements recorded in this browser']);
