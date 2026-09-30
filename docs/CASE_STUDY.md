@@ -32,7 +32,7 @@ Worth knowing: progress means a section was opened, not read; the quiz records o
 
 ## 6. Evidence
 
-Measured locally with the commands CI runs: 31 tests passing across seven files; 99.03% statement and 94.49% branch coverage of the kit modules; typed ESLint, `tsc --noEmit` and html-validate clean; the library builds to a 30.2 kB module. On the first resource the converter namespaced 26 custom properties, replaced 124 inline style attributes with 35 classes, typed 27 buttons, gave six tables a body and added a `<main>` landmark; that resource passes html-validate and its seven tests, and every original widget — tabs, design selector, coding walkthrough, rigour scorer, self-quiz — still works under the strict policy. Headless Chrome on the demo: zero console errors, KPIs updating on open and answer, no horizontal scroll at 1200 or 400 pixels.
+Measured locally with the commands CI runs: 40 tests passing across eight files; 99.06% statement and 93.77% branch coverage of the kit modules; typed ESLint, `tsc --noEmit` and html-validate clean; the library builds to a 30.2 kB module. On the first resource the converter namespaced 26 custom properties, replaced 124 inline style attributes with 35 classes, typed 27 buttons, gave six tables a body and added a `<main>` landmark; that resource passes html-validate and its seven tests, and every original widget — tabs, design selector, coding walkthrough, rigour scorer, self-quiz — still works under the strict policy. Headless Chrome on the demo: zero console errors, KPIs updating on open and answer, no horizontal scroll at 1200 or 400 pixels.
 
 ## 7. What it would take to run this in production
 
